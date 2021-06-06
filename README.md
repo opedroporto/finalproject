@@ -6,13 +6,15 @@
   
 ## How to acess it  
 #### web version  
-go to https://bearing.pythonanywhere.com and enjoy it  
+•go to https://bearing.pythonanywhere.com
+•enjoy it  
+  
 #### local version  
-Clone the repository: git clone https://github.com/opedroporto/finalproject  
-Once you are in its directory, edit the app.py and you should need to make some changes in the following lines:  
+•Clone the repository: git clone https://github.com/opedroporto/finalproject  
+•Once you are in its directory, edit the app.py and you should need to make some changes in the following lines:  
 16, 17, 54  
-Edit these lines in order they fit your directories paths  
-You should also define values to variables set in .env file  
+•Edit these lines in order for them to fit your directories paths  
+•You should also define values to variables set in .env file  
   
   
   
