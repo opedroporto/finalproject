@@ -7,11 +7,11 @@
 **static**: Contains all files used for styling the pages and add images to the application. "css" directory contains the CSS files and the "images" directory contains every used image.  
 **templates**: Contains all html files used in the website. In the html, I have been through a lot of javascript, including jQuery library and AJAX method for performing requests to my back end server.  
 **.gitignore**: Simply ignore the .env fie, which contains all environmental variables.  
-**README.md**: It is this file.
-**app.py**: It is main file of the application and it is all structured and organized in this files, it uses a lot of the Flask library for structuring the site and rendering every template. It is also using, among others libraries, sqlite3 for performing SQL queries in my database.
-**bearing.db**: It is the SQLite database which contains 3 tables: users, cards and examples. It stores data about the user, the cards owned by each user and the examples for each card. 
-**helpers.py**: 
-**requirements.txt**:
+**README.md**: It is this file.  
+**app.py**: It is main file of the application and it is all structured and organized in this files, it uses a lot of the Flask library for structuring the site and rendering every template. It is also using, among others libraries, sqlite3 for performing SQL queries in my database.  
+**bearing.db**: It is the SQLite database which contains 3 tables: users, cards and examples. It stores data about the user, the cards owned by each user and the examples for each card.  
+**helpers.py**:  
+**requirements.txt**:  
 
 
 ## How to acess it  
