@@ -10,8 +10,8 @@
 **README.md**: It is this file.  
 **app.py**: It is main file of the application and it is all structured and organized in this files, it uses a lot of the Flask library for structuring the site and rendering every template. It is also using, among others libraries, sqlite3 for performing SQL queries in my database.  
 **bearing.db**: It is the SQLite database which contains 3 tables: users, cards and examples. It stores data about the user, the cards owned by each user and the examples for each card.  
-**helpers.py**:  
-**requirements.txt**:  
+**helpers.py**: Contains some usefull python functions that are used in the application.  
+**requirements.txt**: All libraries required for running this applications are here.  
 
 
 ## How to acess it  
