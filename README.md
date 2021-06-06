@@ -3,8 +3,6 @@
 #### Description: Bearing is a free application and our goal is to help you to learn a new language and maximize your learning process with flash cards that can be reviewed anytime you want. Flash cards can also be used for learning or recall anything you want, bearing it in your mind.
 #### Project link: https://bearing.pythonanywhere.com
 
-This is my final project for CS50 Introduction to Computer Science course.
-
 ## How to acess it
 #### web version
 go to https://bearing.pythonanywhere.com and enjoy it
