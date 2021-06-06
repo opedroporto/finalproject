@@ -4,8 +4,8 @@
 #### Project link: https://bearing.pythonanywhere.com  
 
 ## Files walkthrough
-#### **static**: Contains all files used for styling the pages and add images to the application. "css" directory contains the CSS files and the "images" directory contains every used image
-#### **templates**: Contains all html files used in the website. In the html, I have been through a lot of javascript, including jQuery library and AJAX method for performing requests to my back end server.
+**static**: Contains all files used for styling the pages and add images to the application. "css" directory contains the CSS files and the "images" directory contains every used image
+**templates**: Contains all html files used in the website. In the html, I have been through a lot of javascript, including jQuery library and AJAX method for performing requests to my back end server.
 
 
 
