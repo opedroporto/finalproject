@@ -27,6 +27,6 @@
 • You should also define values to variables set in .env file.  
 • Install the requirements: pip install -r requirements.txt  
 • Execute: flask run  
-• If you need some support, you can contact me via this e-mail address: portopdr@gmail.com  
+• If you need some support, you can contact me via this e-mail address: portopdr@gmail.com\
   
 I've been testing my application lately and it is running properly locally but my web app is running into some bugs, so I'm sorry for it and I hope can fix it soon.  
