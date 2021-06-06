@@ -1,0 +1,350 @@
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                // auto-epandable text area
+                $("textarea").each(function () {
+                }).on("input", function () {
+                  this.style.height = "auto";
+                  this.style.height = (this.scrollHeight) + "px";
+                });
+
+
+                /*add and remove examples*/
+                $("#num").val($('#examples_qnt').val());
+                var i = parseInt($('#examples_qnt').val()) + 1;
+                $("#add_example").click(function(){
+                    $(".examples").append("<div id='example"+ i +"' class='input-group' style='padding-bottom:1em;'><input form='form1' type='text' class='form-control' name='example"+ i +"' placeholder='Example' autocomplete='off' aria-describedby='basic-addon2'><div id='remove_example' class='input-group-append'><button id='remove_example' class='btn btn-outline-danger' type='button'>✕</button></div></div>");
+                    i += 1;
+                    $("#num").val(i);
+                });
+                $(document).on('click', '#remove_example', function(){
+                    $(this).parent().parent().remove();
+                });
+
+                /*call API for image results*/
+                const IMAGE_QUANTITY = 12;
+                $(function() {
+                    $('#show_images').bind('click', function() {
+                        key = $('#word').val();
+                        $.getJSON('/image_search', { keyword: key }, function(data) {
+                            $('#images').html('');
+                            for (i = 0; i < IMAGE_QUANTITY/2; i++){
+                                $('#images').append("<div class='col-4 col-sm-4 col-md-4 col-lg-2 p-0'><img class='crop_img' src='" + data[i]['link'] + "' alt='" + data[i]['title'] + "'/></div>");
+                            }
+                        });
+                    return false;
+                    });
+                });
+                $(function() {
+                    $('#show_images').bind('click', function() {
+                        $.getJSON('/image_search2', { keyword: key }, function(data) {
+                            for (i = 0; i < IMAGE_QUANTITY; i++){
+                                $('#images').append("<div class='col-4 col-sm-4 col-md-4 col-lg-2 p-0'><img class='crop_img' src='" + data['value'][i]['url'] + "' alt='" + data['value'][i]['name'] + "'/></div>");
+                            }
+                        });
+                    return false;
+                    });
+                });
+
+                /*See image results for USER INPUT...*/
+                setInterval(function(){
+                    var word_input = $('#word').val();
+                    if (word_input.length > 20) {
+                      word_input = word_input.substring(0, 19) + "...";
+                    }
+                    $('#user_input').text(word_input)
+                }, 50);
+
+
+            // CONTENT
+
+
+            $('loading').hide();
+            $('#end').hide();
+            // show
+            $('#show').click(function(){
+                $('#definition').css('visibility', 'visible');
+                $('#examples').css('visibility', 'visible');
+            });
+            // definition
+            $('#show_def').click(function(){
+                $('#definition').css('visibility', 'visible');
+            });
+            // examples
+            $('#show_ex').click(function(){
+                $('#examples').css('visibility', 'visible');
+            });
+            // hide
+            $('#hide').click(function(){
+                $('#definition').css('visibility', 'hidden');
+                $('#examples').css('visibility', 'hidden');
+            });
+            // NEXT
+            $(function() {
+                $('#next').bind('click', function() {
+                    $.getJSON('/get_card', function(data) {
+                        $('#previous').show();
+
+                        $('#definition').css('visibility', 'hidden');
+                        $('#examples').css('visibility', 'hidden');
+                        $('#examples').html('');
+
+                        $('#word').text(data['card'][2]);
+                        $('#definition').text(data['card'][3]);
+
+                        for (var i = 0; i < (data['examples'].length); i++){
+                            $('#examples').append("<p>" +  data['examples'][i] + "</p>");
+                        }
+                        })
+                        .fail(function() {
+                            $('#actual_card').hide();
+                            $('#end').show();
+                            $('#next').hide();
+                            $('#previous').show();
+
+                            // stop timer
+                            clearInterval(timer);
+
+                            // animate timer
+                            $('#timer').css({'color': '#ffb400'});
+                            $('#timer').animate({
+                                left: 200,
+                                bottom: 200
+                            }, 250);
+
+                         });
+                return false;
+                });
+            });
+            // PREVIOUS
+            $(function() {
+                $('#previous').bind('click', function() {
+                    $.getJSON('/get_card', {left: true}, function(data) {
+                        if (!data['card_left']) {
+                            $('#previous').hide();
+                        } else {
+                            $('#previous').show();
+                        }
+                        $('#end').hide();
+                        $('#actual_card').show();
+                        $('#next').show();
+
+                        $('#definition').css('  visibility', 'hidden');
+                        $('#examples').css('visibility', 'hidden');
+                        $('#examples').html('');
+
+                        $('#word').text(data['card'][2]);
+                        $('#definition').text(data['card'][3]);
+
+                        for (var i = 0; i < (data['examples'].length); i++){
+                            $('#examples').append("<p>" +  data['examples'][i] + "</p>");
+                        }
+                        $('#timer').animate({
+                                left: 10,
+                                bottom: 0,
+                            }, 250);
+                        })
+                        .fail(function() {
+                            $('#previous').hide();
+                            // animate timer back
+                            $('#timer').animate({
+                                left: 10,
+                                bottom: 0,
+                            }, 250);
+                         });
+                return false;
+                });
+            });
+
+            // timer
+            var seg = 0;
+            var min = 0;
+            var hour = 0;
+
+            $('#timer').text('0:00:00');
+            var timer = setInterval(function(){
+
+                seg = parseInt(seg) + 1;
+                if (seg >= 60){
+                    min += 1;
+                    seg = 0;
+                }
+                if (min >= 60){
+                    hour += 1;
+                    min = 0;
+                }
+
+                // add time
+                $.ajax({
+                  type: "POST",
+                  url: '/add_time',
+                });
+
+                if(seg < 10){
+                    seg = 0 + String(seg)
+                }
+                if(min < 10){
+                    $('#timer').text(hour+':0'+min+':'+seg);
+                }
+                else {
+                    $('#timer').text(hour+':'+min+':'+seg);
+                }
+            }, 1000);
+
+
+
+            // edit
+            $(document).on('submit','#edit_card',function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'GET',
+                url:'/edit_card',
+                cache: false,
+                beforeSend: function(){
+                    $('#loading').show();
+                },
+                success: function(response) {
+                    $('main').html(response);
+                },
+                complete: function(){
+                    $('loading').hide();
+                }
+            })
+            });
+
+            // SUBMIT EDIT
+            $(document).on('submit','#form1',function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url:'/edit_card',
+                cache: false,
+                data: {data : $('form').serializeArray()},
+                beforeSend: function(){
+                    $('#loading').show();
+                },
+                success: function(response) {
+                },
+                complete: function(){
+                    $('loading').hide();
+                    $('#edit_content').hide();
+                    $('#content').show();
+                    //get card data
+                    $.getJSON('/get_card', {actual: true}, function(data) {
+                        if (!data['card_left']) {
+                            $('#previous').hide();
+                        } else {
+                            $('#previous').show();
+                        }
+                        $('#definition').css('visibility', 'hidden');
+                        $('#examples').css('visibility', 'hidden');
+                        $('#examples').html('');
+
+                        $('#word').html(data['card'][2]);
+                        $('#definition').html(data['card'][3]);
+
+                        for (var i = 0; i < (data['examples'].length); i++)
+                            $('#examples').append("<p>" +  data['examples'][i] + "</p>");
+
+                        });
+                }
+            })
+            });
+            // SUBMIT DELETE
+            $(document).on('submit','#delete_card',function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url:'/delete_card',
+                cache: false,
+                beforeSend: function(){
+                    $('#loading').show();
+                },
+                success: function(response) {
+                },
+                complete: function(){
+                    $('loading').hide();
+                    $('#edit_content').hide();
+                    $('#content').show();
+                    //get card data
+                    $.getJSON('/get_card', {actual: true}, function(data) {
+                        if (!data['card_left']) {
+                            $('#previous').hide();
+                        } else {
+                            $('#previous').show();
+                        }
+                        $('#definition').css('visibility', 'hidden');
+                        $('#examples').css('visibility', 'hidden');
+                        $('#examples').html('');
+
+                        $('#word').html(data['card'][2]);
+                        $('#definition').html(data['card'][3]);
+
+                        for (var i = 0; i < (data['examples'].length); i++)
+                            $('#examples').append("<p>" +  data['examples'][i] + "</p>");
+
+                        });
+                }
+            })
+            });
+
+            });
+
+        </script>
+
+            <!--arrow left-->
+            <a id='previous' style='display:none;' class="carousel-control-prev" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+            </a>
+            <!--arrow right-->
+            <a id='next' class="carousel-control-next" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+            </a>
+
+            <div class='container col d-flex justify-content-center cont_plr_0'>
+
+                <!--card-->
+                <div id='actual_card' class='card study_card'>
+                    <!--edit-->
+                    <form id='edit_card' action='/edit_card' class='actions pt-1'>
+                        <button class='btn btn-secondary'><i class='fas fa-pen'></i></button>
+                    </form>
+                    <div class='card-header pt-5'>
+                        <h2 id='word' class="card-title text-center"></h2>
+                    </div>
+                    <div class='card-body'>
+                        <p id='definition' class='card-text text-center'></p>
+                    </div>
+                    <div class='card-footer'>
+                        <div id='examples' class='card-text text-left'>
+                        </div>
+                    </div>
+                    <div class='card-footer'>
+                        <div id='buttons' class='row'>
+                            <button id='show_def' class='btn btn-dark col-12 col-md-2'>Show definition</button>
+                            <button id='show_ex' class='btn btn-dark col-12 col-md-2'>Show examples</button>
+                            <button id='show' class='btn btn-primary col-12 col-md-2'>Show all</button>
+                            <button id='hide' class='btn btn-danger col-12 col-md-2'>Hide</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--end-->
+                <div id='end' class='card study_card'>
+                    <div class='card-header pt-3' style='color:#ffb400;'>
+                        <h2 class="card-title text-center">Congrulations!</h2>
+                    </div>
+                    <div class='card-body text-center'>
+                        <img class="card-img" draggable='false' src='../static/images/trophy.png' alt='Trophy award'/>
+                        <h4 class='card-text'>All cards have been studied.<h4>
+                        <h3 class='card-text'>Nothing else to study here.</h3>
+                    </div>
+                    <div class='card-footer' style='margin-bottom: .25em;'>
+                        <h4 class='card-text text-muted text-center'>Click <a class='text-decoration-none' href='/add'>here</a> to add more cards.</h4>
+                    </div>
+                </div>
+            </div>
+
+            <h2 id='timer' class='border border-2 p-2' style='position:absolute;bottom:0px;left:10px;'></h2>

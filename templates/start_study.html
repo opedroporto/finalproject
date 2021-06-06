@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+    {% block title %}
+        Study - Bearing
+    {% endblock %}
+
+    {% block script %}
+    <script>
+        $(document).ready(function(){
+            $('#loading').hide();
+            // start
+            $(document).on('submit','#start_form',function(e){
+            e.preventDefault();
+            $.ajax({
+                type:'POST',
+                url:'/study',
+                cache: false,
+                beforeSend: function(){
+                    $('#loading').show();
+                },
+                success: function(response) {
+                    $('main').html(response);
+
+                    //get card data
+                    $.getJSON('/get_card', {actual: true}, function(data) {
+                        $('#definition').css('visibility', 'hidden');
+                        $('#examples').css('visibility', 'hidden');
+                        $('#examples').html('');
+
+                        $('#word').html(data['card'][2]);
+                        $('#definition').html(data['card'][3]);
+
+                        for (var i = 0; i < (data['examples'].length); i++)
+                            $('#examples').append("<p>" +  data['examples'][i] + "</p>");
+
+                        });
+                },
+                complete: function(){
+                    $('loading').hide();
+                }
+            })
+            });
+        });
+    </script>
+    {% endblock %}
+
+
+    {% block body %}
+
+            <div id='loading' class='row align-items-center'>
+                <img id='loading_gif' draggable='false' src='../static/images/loading.gif'/>
+            </div>
+
+            <div class='container col d-flex justify-content-center cont_plr_0'>
+                <div class='card start_card'>
+                    <div class='card-body text-center'>
+                        <form id='start_form'>
+                            <button id='start' type='submit' class='btn btn-warning'><h2>START STUDYING</h2></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    {% endblock %}

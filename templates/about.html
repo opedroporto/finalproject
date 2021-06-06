@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+    {% block title %}
+        Bearing - Organize your flash cards
+    {% endblock %}
+    {% block body %}
+        <main style='background-color:#ffffff'>
+            <img id='banner' draggable='false' src='../static/images/lofi.gif'/>
+            <div class='container p-3 pt-2' style='font-size:17px;'>
+                <h1 class='fw-bold text-center p-1'>About</h1>
+                <div class='row' style='color:#6500f0;'>
+                    <div class='col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-3 text-justify'>
+                        <p>Bearing is a free application and our goal is to help you to learn a new language and
+                        maximize your learning process with flash cards that can be reviewed anytime you want.
+                        Flash cards can also be used for learning or recall anything you want, bearing it in
+                        your mind. It is available on its web version only yet, however, we hope we can maximize
+                        its compatibility and increase user's experience as we can. Suggestions are welcome
+                        and you can contact us by our e-mail at the bottom of the page.</p>
+                    </div>
+                    <div class='col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 text-center p-3 pt-0'>
+                        <img style='width:65%;' src='../static/images/cards.png' draggable='false'/>
+                    </div>
+                    <div class='col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 text-center p-0'>
+                        <img style='width:100%;' src='../static/images/cs50x.png' draggable='false'/>
+                    </div>
+                        <div class='col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 p-5'>
+                        <p>This project was presented as my <a href='https://cs50.harvard.edu/x/2021/'>CS50x</a>'s final project, a Harvard Computer
+                        Science course teached by David J. Malan and Brian Yu.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    {% endblock %}

@@ -1,0 +1,312 @@
+{% extends "layout.html" %}
+
+    {% block title %}
+        {{ p_user[1] }} profile - Bearing
+    {% endblock %}
+
+    {% block body %}
+    <script>
+        $(document).ready(function(){
+            // display edit profile
+            $('#edit').click(function(){
+                $('.display_edit').show();
+            });
+            $('.btn-close').click(function(){
+                $(this).parent().parent().parent().hide();
+            });
+
+            // display confirmation screens
+            $('#logout').click(function(){
+                $('#confirm_logout').show();
+            });
+            $('#delete').click(function(){
+                $('#confirm_delete').show();
+            });
+
+            // hide confirmation screens
+            $('#no_logout').click(function(){
+                $('#confirm_logout').hide();
+            });
+            $('#no_delete').click(function(){
+                $('#confirm_delete').hide();
+            });
+
+            // submit forms
+            $('#yes_logout').click(function(){
+                $('#logout_form').submit();
+            });
+            $('#yes_delete').click(function(){
+                $('#delete_form').submit();
+            });
+
+        });
+    </script>
+
+        <!--logout confirmation-->
+        <div id='confirm_logout' class='display' style='display:none;'>
+            <div id='add_mail' style='width:300px;' class='p-2' role='alert'>
+                <p class='text-center text-white'>Are you sure you want to log out?</p>
+                <div class='text-center'>
+                    <button id='yes_logout' class='btn btn-success'>Yes</button>
+                    <button id='no_logout' class='btn btn-danger'>No</button>
+                </div>
+            </div>
+        </div>
+        <!--delete confirmation-->
+        <div id='confirm_delete' class='display' style='display: none;'>
+            <div id='add_mail' style='width:300px;' class='p-2' role='alert'>
+                <p class='text-center text-white'>Are you sure you want to permanently delete your account?</p>
+                <div class='text-center'>
+                    <button id='yes_delete' class='btn btn-success'>Yes</button>
+                    <button id='no_delete' class='btn btn-danger'>No</button>
+                </div>
+            </div>
+        </div>
+
+        {% if display %}
+        <!--diplay edit profile-->
+        <div class='display display_edit' style='position:absolute;'>
+            <div id='add_mail' class='p-2' role='alert'>
+                <div class='input-group'>
+                    <button type='button' class='btn-close btn-close-white ms-auto' aria-label='Close'></button>
+                </div>
+                <form action="/user/{{ user[1] }}" method="POST">
+                    {% if get_flashed_messages() %}
+                        <p id='error_msg' class='p-1'>{{ get_flashed_messages()[0] }}</p>
+                    {% endif %}
+                    {% if msg %}
+                        <p id='success_msg' class='p-1'>{{ msg }}</p>
+                    {% endif %}
+                    <!--username-->
+                    <p class='card-text text-white ps-1 m-0'>Username (used for sign in):</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user p-2"></i></span>
+                        </div>
+                        <input id="url" type="text" class="form-control" name="username" value={{ p_user[1] }} placeholder="Username" aria-describedby="textHelp" autofocus autocomplete="off" required>
+                    </div>
+                    <!--mail-->
+                    <p class='card-text text-white ps-1 m-0'>E-mail:</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope p-2"></i></span>
+                        </div>
+                        {% if p_user[3] %}
+                            <input id="mail" type="email" class="form-control" name="mail" value={{ p_user[3] }} placeholder="E-mail" min='3' max='64' aria-describedby="emailHelp" autofocus autocomplete="off">
+                        {% else %}
+                            <input id="mail" type="email" class="form-control" name="mail" placeholder="E-mail" min='3' max='64' aria-describedby="emailHelp" autofocus autocomplete="off">
+                        {% endif %}
+                    </div>
+                    <!--url-->
+                    <p class='card-text text-white ps-1 m-0'>Profile image URL (<a href='https://www.pythonanywhere.com/whitelist/'>Allowed sites</a>):</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-link p-2"></i></span>
+                        </div>
+                        {% if p_user[4] %}
+                            <input id="url" type="text" class="form-control" name="url" value={{ p_user[4] }} placeholder=" URL" aria-describedby="urlHelp" autofocus autocomplete="off">
+                        {% else %}
+                            <input id="url" type="text" class="form-control" name="url" placeholder=" URL" aria-describedby="urlHelp" autofocus autocomplete="off">
+                        {% endif %}
+                    </div>
+                    <!--banner url-->
+                    <p class='card-text text-white ps-1 m-0'>Background image URL (<a href='https://www.pythonanywhere.com/whitelist/'>Allowed sites</a>):</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-link p-2"></i></span>
+                        </div>
+                        {% if p_user[5] %}
+                            <input id="banner_url" type="text" class="form-control" name="banner_url" value={{ p_user[5] }} placeholder="URL" aria-describedby="urlHelp" autofocus autocomplete="off">
+                        {% else %}
+                            <input id="banner_url" type="text" class="form-control" name="banner_url" placeholder="URL" aria-describedby="urlHelp" autofocus autocomplete="off">
+                        {% endif %}
+                    </div>
+                    <!--description-->
+                    <p class='card-text text-white ps-1 m-0'>Description:</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-align-justify p-2"></i></span>
+                        </div>
+                        {% if p_user[6] %}
+                            <textarea id="description" type="text" class="form-control" name="description" rows='1' maxlength='256' placeholder="Description" aria-describedby="textHelp" autofocus autocomplete="off">{{ p_user[6] }}</textarea>
+                        {% else %}
+                            <textarea id="description" type="text" class="form-control" name="description" rows='1' maxlength='256' placeholder="Description" aria-describedby="textHelp" autofocus autocomplete="off"></textarea>
+                        {% endif %}
+                    </div>
+                    <!--submit button-->
+                    <div class="input-group p-1 pt-3">
+                        <input class="btn btn-primary" type="submit" value="Save changes">
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <!--diplay edit profile-->
+        <div class='display display_edit' style='display: none;'>
+            <div id='add_mail' class='p-2' role='alert'>
+                <div class='input-group p-1'>
+                    <button type='button' class='btn-close btn-close-white ms-auto' aria-label='Close'></button>
+                </div>
+                <form action="/user/{{ user[1] }}" method="POST">
+                    {% if get_flashed_messages() %}
+                        <p id='error_msg' class='p-1'>{{ get_flashed_messages()[0] }}</p>
+                    {% endif %}
+                    {% if msg %}
+                        <p id='success_msg' class='p-1'>{{ msg }}</p>
+                    {% endif %}
+                    <!--username-->
+                    <p class='card-text text-white ps-1 m-0'>Username (used for sign in):</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user p-2"></i></span>
+                        </div>
+                        <input id="url" type="text" class="form-control" name="username" value={{ p_user[1] }} placeholder="Username" aria-describedby="textHelp" autofocus autocomplete="off" required>
+                    </div>
+                    <!--mail-->
+                    <p class='card-text text-white ps-1 m-0'>E-mail:</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-envelope p-2"></i></span>
+                        </div>
+                        {% if p_user[3] %}
+                            <input id="mail" type="email" class="form-control" name="mail" value={{ p_user[3] }} placeholder="E-mail" min='3' max='64' aria-describedby="emailHelp" autofocus autocomplete="off">
+                        {% else %}
+                            <input id="mail" type="email" class="form-control" name="mail" placeholder="E-mail" min='3' max='64' aria-describedby="emailHelp" autofocus autocomplete="off">
+                        {% endif %}
+                    </div>
+                    <!--url-->
+                    <p class='card-text text-white ps-1 m-0'>Profile image URL (<a href='https://www.pythonanywhere.com/whitelist/'>Allowed sites</a>):</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-link p-2"></i></span>
+                        </div>
+                        {% if p_user[4] %}
+                            <input id="url" type="text" class="form-control" name="url" value={{ p_user[4] }} placeholder=" URL" aria-describedby="urlHelp" autofocus autocomplete="off">
+                        {% else %}
+                            <input id="url" type="text" class="form-control" name="url" placeholder=" URL" aria-describedby="urlHelp" autofocus autocomplete="off">
+                        {% endif %}
+                    </div>
+                    <!--banner url-->
+                    <p class='card-text text-white ps-1 m-0'>Background image URL (<a href='https://www.pythonanywhere.com/whitelist/'>Allowed sites</a>):</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-link p-2"></i></span>
+                        </div>
+                        {% if p_user[5] %}
+                            <input id="banner_url" type="text" class="form-control" name="banner_url" value={{ p_user[5] }} placeholder="URL" aria-describedby="urlHelp" autofocus autocomplete="off">
+                        {% else %}
+                            <input id="banner_url" type="text" class="form-control" name="banner_url" placeholder="URL" aria-describedby="urlHelp" autofocus autocomplete="off">
+                        {% endif %}
+                    </div>
+                    <!--description-->
+                    <p class='card-text text-white ps-1 m-0'>Description:</p>
+                    <div class='input-group p-1'>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-align-justify p-2"></i></span>
+                        </div>
+                        {% if p_user[6] %}
+                            <textarea id="description" type="text" class="form-control" name="description" rows='1' maxlength='256' placeholder="Description" aria-describedby="textHelp" autofocus autocomplete="off">{{ p_user[6] }}</textarea>
+                        {% else %}
+                            <textarea id="description" type="text" class="form-control" name="description" rows='1' maxlength='256' placeholder="Description" aria-describedby="textHelp" autofocus autocomplete="off"></textarea>
+                        {% endif %}
+                    </div>
+                    <!--submit button-->
+                    <div class="input-group p-1 pt-3">
+                        <input class="btn btn-primary" type="submit" value="Save changes">
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+
+        <!--banner-->
+        {% if p_user[5] %}
+            <div class='crop_banner'>
+                <img class='banner_img' src={{ p_user[5] }}/>
+            </div>
+        {% else %}
+            <div class='crop_banner'>
+                <img class='banner_img' src='/../static/images/background.jpg'/>
+            </div>
+        {% endif %}
+
+        <!--profile card-->
+        <div style='padding-top:25%;'>
+            <div class='card profile_card border border-primary border-2'>
+                <div class='card-header text-center'>
+                    {% if edit %}
+                        <!--edit-->
+                        <div class='actions'>
+                            <div class='btn-group'>
+                                <button id='edit' class='btn btn-secondary'><i class='fas fa-cog p-2' role='button'></i></button>
+                                <button class="btn btn-secondary dropdown-toggle dropdown-toggle-split p-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class='dropdown-menu dropdown-menu-right'>
+                                    <form id='logout_form' action='/logout' method='POST'>
+                                        <a id='logout' class='dropdown-item' role='button'>Log out</a>
+                                    </form>
+                                    <div class='dropdown-divider' style='opacity:0;'></div>
+                                    <form id='delete_form' action='/delete' method='POST'>
+                                        <a id='delete' class='dropdown-item' role='button'>Delete account</a>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class='row'>
+                        <!--profile photo-->
+                        <div id='col_user_img' class='col-12 col-sm-12 col-md-6 col-lg-6 text-center m-0'>
+                            {% if p_user[4] %}
+                                <img id='user_img' class='rounded-circle border border-primary border-2' src={{ p_user[4] }}/>
+                            {% else %}
+                                <img id='user_img' class='rounded-circle border border-primary border-2' src='../static/images/user.png'/>
+                            {% endif %}
+                        </div>
+                        <!--username-->
+                        <div id='col_username' class='col-12 col-sm-12 col-md-6 col-lg-6'>
+                            <h2 id='username'>{{ p_user[1] }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class='card-header'>
+                    <!--emblems-->
+                    <div id='emblems' class='row ms-5 me-5'>
+                        <div class='col-12 col-md-4 text-center pb-3'>
+                            <img class='medal' src='../static/images/medal1.png'/><br>
+                            {{ medals[0] }}
+                            {% if medals[0] == 1 %}
+                                card
+                            {% else %}
+                                cards
+                            {% endif %}
+                        </div>
+                        <div class='col-12 col-md-4 text-center pb-3'>
+                            <img class='medal' src='../static/images/medal2.png'/><br>
+                            {{ medals[1] }}
+                            {% if medals[0] == 1 %}
+                                reviewed card
+                            {% else %}
+                                reviewed cards
+                            {% endif %}
+                        </div>
+                        <div class='col-12 col-md-4 text-center pb-3'>
+                            <img class='medal' src='../static/images/medal3.png'/><br>
+                            {{ "%.1f"|format(medals[2]/3600) }}
+                            {% if medals[0] == 1 %}
+                                hour of study
+                            {% else %}
+                                hours of study
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class='card-body text-center'>
+                    {% if p_user[6] %}
+                        <p>{{ p_user[6] }}</p>
+                    {% else %}
+                        <p class='text-muted'>No description</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endblock %}

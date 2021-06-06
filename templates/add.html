@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+
+    {% block title %}
+         Add - Bearing
+    {% endblock %}
+
+    {% block body %}
+        <script type='text/javascript'>
+            $(document).ready(function(){
+
+                // auto-epandable text area
+                $("textarea").each(function () {
+                }).on("input", function () {
+                  this.style.height = "auto";
+                  this.style.height = (this.scrollHeight) + "px";
+                });
+
+
+                /*add and remove examples*/
+                var i = 0;
+                $("#add_example").click(function(){
+                    $(".examples").append("<div id='example"+ i +"' class='input-group' style='padding-bottom:1em;'><input form='form1' type='text' class='form-control' name='example"+ i +"' placeholder='Example' autocomplete='off' aria-describedby='basic-addon2'><div id='remove_example' class='input-group-append'><button id='remove_example' class='btn btn-outline-danger' type='button'>✕</button></div></div>");
+                    i += 1;
+                    document.getElementById("num").value = i;
+                });
+                $(document).on('click', '#remove_example', function(){
+                    $(this).parent().parent().remove();
+                });
+
+                /*call API for image results*/
+                const IMAGE_QUANTITY = 12;
+                $(function() {
+                    $('#show_images').bind('click', function() {
+                        key = $('#word').val();
+                        $.getJSON('/image_search', { keyword: key }, function(data) {
+                            console.log(data);
+                            $('#images').html('');
+                            for (i = 0; i < IMAGE_QUANTITY/2; i++){
+                                $('#images').append("<div class='col-4 col-sm-4 col-md-4 col-lg-2 p-0'><img class='crop_img' src='" + data[i]['link'] + "' alt='" + data[i]['title'] + "'/></div>");
+                            }
+                        });
+                    return false;
+                    });
+                });
+                $(function() {
+                    $('#show_images').bind('click', function() {
+                        $.getJSON('/image_search2', { keyword: key }, function(data) {
+                            for (i = 0; i < IMAGE_QUANTITY; i++){
+                                $('#images').append("<div class='col-4 col-sm-4 col-md-4 col-lg-2 p-0'><img class='crop_img' src='" + data['value'][i]['url'] + "' alt='" + data['value'][i]['name'] + "'/></div>");
+                            }
+                        });
+                    return false;
+                    });
+                });
+
+                /*See image results for USER INPUT...*/
+                setInterval(function(){
+                    var word_input = $('#word').val();
+                    if (word_input.length > 20) {
+                      word_input = word_input.substring(0, 19) + "...";
+                    }
+                    $('#user_input').text(word_input)
+                }, 50);
+
+            });
+
+        </script>
+
+        <div class="container" style="padding-left:1.25em;padding-right:1.25em;">
+                <form id="form1" action="/add" method=POST></form>
+                <form id="form2" action='https://dictionary.cambridge.org/us/search/english/direct/?utm_source=widget_searchbox_source&utm_medium=widget_searchbox&utm_campaign=widget_tracking' target="_blank" method='get'></form>
+                    <div class="row">
+                        <!--WORD-->
+                        <div class="col-sm">
+                            <textarea form="form1" class='form-control' id="word" name="word" rows='2' placeholder='Word' autocomplete="off" style="width:100%;float:left;margin-bottom:.5em;margin-top:1.6em;"></textarea>
+                        </div>
+                        <!--WIDGET-->
+                        <div class="col-sm">
+                            <table id='widget' style='font-size:10px;background:#292929;border-collapse:collapse;border-spacing:0;height:7em;width:100%;border-radius:5px;margin-bottom:0em;margin-top:2.5em;' >
+                                <tbody>
+                                    <tr>
+                                        <td colspan='2' style='padding-left:.25em;background:none;border:none;'>
+                                            <a href='https://dictionary.cambridge.org/us/' style='display:block; background: transparent url(https://dictionary.cambridge.org/us/external/images/freesearch/sbl.png?version=5.0.161) no-repeat 5px 6px;height:32px;'></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style='width:68px;background:none;border:none;padding:0;'>
+                                            <input form="form2" class="form-control" style='width:100%;display:block;font-size:10px;border:none;border-radius: 0 0 0 4px' name='q' placeholder="Word in dictionary" autocomplete="off"/>
+                                        </td>
+                                        <td style='width:50px;background:none;border:none;padding:0;'>
+                                            <input form="form2" class="form-control" style='width:100%;display:block;font-size:10px;border:none;background:#d0a44c;border-radius: 0 0 4px 0;' type='submit' value='Look it up' />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--DEFINITION-->
+                    <textarea form="form1" class='form-control mt-4' name="definition" rows='4' data-min-rows='4' placeholder='Definition' autocomplete="off" style="width:100%;margin-top:1em;margin-bottom:2em;"></textarea>
+                    <!--EXAMPLES-->
+                    <div class="examples">
+
+                    </div>
+                    <!--ADD EXAMPLE-->
+                    <button id="add_example" class="btn btn-light" style='color:#000000;'><i class="fas fa-tags"></i></button>
+                    <!--ADD-->
+                    <div class='text-center'>
+                        <button class="btn btn-warning mt-4" form="form1" type="Submit">Add card</button>
+                    </div>
+                    <!--NUM (BACKEND)-->
+                    <input form="form1" id="num" name="num" value='0' style="visibility:hidden;"></input>
+        </div>
+
+        <!--MESSAGE-->
+        <div id="msg">
+            <p style="text-align:center;font-size:18px;">{{ message }}</p>
+        </div>
+
+        <!--Google Search Engine API
+        <script async src="https://cse.google.com/cse.js?cx=452489de23ea9b010"></script> <div class="gcse-search"></div>
+        -->
+
+        <!--Show-image button-->
+        <div class='container' style='padding-top:0;padding-left:1.25em;padding-right:1.25em;'>
+            <div class='btn-group mb-4'>
+                <button id='show_images' class="btn btn-light me-2"><span class='far fa-image'></span></button>
+                <p id='see_image_text'>See image results for <span id='user_input'></span></p>
+            </div>
+        </div>
+
+        <!--Image row-->
+        <div class='container-fluid'>
+            <div id='images' class="row mb-4">
+
+            </div>
+        </div>
+
+    {% endblock %}

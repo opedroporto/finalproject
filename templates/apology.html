@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+    {% block title %}
+        :( {{ phrase }}
+    {% endblock %}
+
+    {% block body %}
+    <body id='glitch'>
+        <h1 class='error_code status mt-2'>{{ code }}</h1>
+        <h2 class='error_code'>{{ phrase }}</h2>
+    </body>
+    {% endblock %}

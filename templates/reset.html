@@ -1,0 +1,69 @@
+<html lang='en'>
+    <head>
+        <!-- meta tags -->
+        <meta charset='utf-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}"/>
+
+        <!-- title -->
+        <title>Sign in to your Bearing account</title>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <!-- Ajax -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+        <!-- Fontawesome CDN -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+        <!-- my CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style_reset.css') }}"/>
+
+    </head>
+    <body>
+        <header>
+        </header>
+        <main>
+            <div class="container">
+                <div class="d-flex justify-content-center h-100">
+                    <div class="card" style='height: 300px;'>
+                        <!--card header-->
+                        <div class="card-header">
+                            <h1>Reset password</h1>
+                        </div>
+                        <!--card body-->
+                        <div class="card-body">
+                            <form id='login_form' action="/resetpassword" method="POST">
+                                <!--email-->
+                                <div class="input-group form-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" name="username" placeholder="username" autofocus autocomplete="off">
+                                </div>
+                                <!--login button-->
+                                <div class="form-group">
+                                    <input class="btn btn-primary float-right" type="submit" value="Continue">
+                                </div>
+                            </form>
+                        </div>
+                           <!--card footer-->
+                        <div class="card-footer">
+                            <div class="d-flex justify-content-center links">
+                                Already have an account?&nbsp<a href="/login">Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
