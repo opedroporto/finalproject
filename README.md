@@ -8,13 +8,13 @@
 **templates**: Contains all html files used in the website. In the html, I have been through a lot of javascript, including jQuery library and AJAX method for performing requests to my back end server.  
 **.gitignore**: Simply ignore the .env fie, which contains all environmental variables.  
 **README.md**: It is this file.  
-**app.py**: It is main file of the application and it is all structured and organized in this files, it uses a lot of the Flask library for structuring the site and rendering every template. It is also using, among others libraries, sqlite3 for performing SQL queries in my database.  
+**app.py**: It is main file of the application and it is all structured and organized in these files, it uses a lot of the Flask library for structuring the site and rendering every template. It is also using, among other libraries, sqlite3 for performing SQL queries in my database.  
 **bearing.db**: It is the SQLite database which contains 3 tables: users, cards and examples. It stores data about the user, the cards owned by each user and the examples for each card.  
-**helpers.py**: Contains some usefull python functions that are used in the application.  
-**requirements.txt**: All libraries required for running this applications are here.  
+**helpers.py**: Contains some useful python functions that are used in the application.  
+**requirements.txt**: All libraries required for running this application are here.  
 
 
-## How to acess it  
+## How to access it  
 #### web version  
 • go to https://bearing.pythonanywhere.com.  
 • enjoy it.  
@@ -23,7 +23,7 @@
 • Clone the repository: git clone https://github.com/opedroporto/finalproject.  
 • Once you are in its directory, edit the app.py and you should need to make some changes in the following lines:  
 • 16, 17, 54.  
-• Edit these lines in order for them to fit your directories paths.  
+• Edit these lines for them to fit your directories paths.  
 • You should also define values to variables set in .env file.  
 • Install the requirements: pip install -r requirements.txt  
 • Execute: flask run  
